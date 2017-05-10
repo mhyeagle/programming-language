@@ -18,6 +18,7 @@ if m is not None:
 else:
     print("m is empty")
 
+print("****************")
 search_str = 'abc|def'
 m = re.search(search_str, 'my food is iabc food precise')
 if m is not None:
