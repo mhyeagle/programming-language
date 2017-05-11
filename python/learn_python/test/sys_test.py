@@ -9,7 +9,13 @@ print "dirname: %s, filename: %s" %(dirname, filename)
 os_path_pardir = os.path.pardir
 print "os_path_abspath: %s" %(os_path_pardir)
 
-print "-----------------------"
+print "-----------1------------"
 home_dir = os.path.join(os.path.split(os.path.realpath(__file__))[0],os.path.pardir)
 print "home_dir: %s" %(home_dir)
+
+print "-----------2------------"
+platform = sys.platform
+print "platform: %s"%(platform)
+flag = platform.startswith("win")
+print flag
 
