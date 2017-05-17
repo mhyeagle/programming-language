@@ -5,3 +5,6 @@ print num
 a = eval
 print a
 
+b = eval('info')
+print b
+
