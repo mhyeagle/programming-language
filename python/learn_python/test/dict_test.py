@@ -8,4 +8,5 @@ key = "name"
 if key in dict:
     print "key: name is in dict"
 
-
+print "***"
+print "name" in dict
