@@ -1,0 +1,4 @@
+Sat, 27 May 2017 10:3200 log_test.py[line:11] DEBUG This is debug message
+Sat, 27 May 2017 10:3200 log_test.py[line:12] INFO This is info message
+Sat, 27 May 2017 10:3200 log_test.py[line:13] WARNING This is warning message
+Sat, 27 May 2017 10:3200 log_test.py[line:14] ERROR This is error message
