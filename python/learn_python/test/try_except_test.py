@@ -10,7 +10,7 @@ else:
     fh.close()
     print "write to file success"
 
-print "***"
+print "*********1**********"
 
 def myException(level):
     if level < 1:
@@ -23,4 +23,12 @@ except:
     print 1
 else:
     print 2
+
+print "*********2**********"
+
+try:
+    fh = open("no_exist_file")
+    fh.write("no exist\n");
+except Exception as e:
+    print e
 
