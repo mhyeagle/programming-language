@@ -35,3 +35,11 @@ for var in $list
 do
     echo $var
 done
+
+echo "***1***"
+my_arr=("1" "2" "3")
+for((i=0; i<${#my_arr[@]}; i++))
+do
+    echo ${my_arr[i]}
+done
+
