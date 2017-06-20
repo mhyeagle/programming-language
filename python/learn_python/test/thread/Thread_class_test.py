@@ -14,11 +14,11 @@ class MyThread(threading.Thread):
     def run(self):
         print "Starting " + self.name
         mutex.acquire()
-        print_time(self.name, self.counter, 5)
+        _print_time(self.name, self.counter, 5)
         mutex.release()
         print "Exiting " + self.name
 
-def print_time(threadName, delay, counter):
+def _print_time(threadName, delay, counter):
     while counter:
         if exitFlag:
             threading.Thread.exit()
