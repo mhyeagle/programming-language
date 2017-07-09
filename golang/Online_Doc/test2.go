@@ -61,7 +61,7 @@ func main() {
 		fmt.Println("too far awary")
 	}
 
-    //使用下面的switch可替代大量的if-then-else链
+	//使用下面的switch可替代大量的if-then-else链
 	t := time.Now()
 	switch {
 	case t.Hour() < 12:
