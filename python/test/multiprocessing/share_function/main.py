@@ -20,8 +20,11 @@ def main():
     p_func = getattr(obj, 'func')
 
     process_1 = Process(target=fork_func, args=(p_func, news))
+    process_2 = Process(target=fork_func, args=(p_func, news))
     process_1.start()
+    process_2.start()
     process_1.join()
+    process_2.join()
 #    p_func(news)
     print "***main***"
     news[0] = 'hello'
