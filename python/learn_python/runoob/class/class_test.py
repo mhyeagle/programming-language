@@ -13,6 +13,9 @@ class people:
 
 p = people("miao", 29)
 p.output()
+print("p name: {}".format(p.name))
+
+print("********")
 
 class girl(people):
     chest_circumference = 0
@@ -35,6 +38,8 @@ g = girl("wang", 25, 50)
 g.output()
 g.print()
 g.father_print()
+
+print("********")
 
 class base:
     #private number
