@@ -50,8 +50,8 @@ private:
     int exchange_emoji(int code_point);
 private:
     CodeConverter * _cc;
-    char * _swap;
-    char * _swap_2;
+    CodeConverter * _cc2;
+    char * _swap[3];
     int _emoji[EMOJILEN];
     wchar_t _emoji_base[EMOJIBASELEN];
 };

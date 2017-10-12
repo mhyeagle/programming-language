@@ -5,17 +5,18 @@ Utf8ToGbk::Utf8ToGbk() {
     if (_cc == NULL) {
         perror("Utf8ToGbk construct error.");
     }
-    _swap = new char[BUFLEN];
-    if (_swap == NULL) {
-        perror("Utf8ToGbk construct failed.");
-    } else {
-        memset(_swap, 0, BUFLEN);
+    _cc2 = new CodeConverter("WCHAR_T", "GBK");
+    if (_cc2 == NULL) {
+        perror("Utf8ToGbk construct error.");
     }
-    _swap_2 = new char[BUFLEN];
-    if (_swap_2 == NULL) {
-        perror("Utf8ToGbk construct failed.")
-    } else {
-        memset(_swap_2, 0, BUFLEN);
+
+    for (int i = 0; i < 3; ++i) {
+    _swap[i] = new char[BUFLEN];
+        if (_swap[i] == NULL) {
+            perror("Utf8ToGbk construct failed.");
+        } else {
+            memset(_swap[i], 0, BUFLEN);
+        }
     }
 
     _emoji_base[0] = L'[';
@@ -31,18 +32,21 @@ Utf8ToGbk::~Utf8ToGbk() {
     if (_cc != NULL) {
         delete _cc;
     }
-    if (_swap != NULL) {
-        delete[] _swap;
+    if (_cc2 != NULL) {
+        delete _cc2;
     }
-    if (_swap_2 != NULL) {
-        delete[] _swap_2;
+
+    for (int i = 0; i < 3; ++i) {
+        if (_swap[i] != NULL) {
+            delete[] _swap[i];
+        }
     }
 }
 
 int Utf8ToGbk::convert(const char * source, char * dest, bool & has_emoji) {
     //step 1, convert utf8 to unicode
-    strcpy(_swap, source);
-    int ret = _cc.convert(_swap, strlen(_swap), _swap_2, BUFLEN);
+    strcpy(_swap[0], source);
+    int ret = _cc.convert(_swap[0], strlen(_swap[0]), _swap[1], BUFLEN);
     if (ret == (size_t)-1) {
         perror("iconvert error");
         return -1;
@@ -50,12 +54,13 @@ int Utf8ToGbk::convert(const char * source, char * dest, bool & has_emoji) {
 
     //step 2, travel unicode and exchange emoji
     //emoji to [emoji]1F3BF[emoji]
-    int * dest_p = (int *)dest;
+    int * dest_p = (int *)_swap[2];
     has_emoji = false;
-    int * p = _swap_2;
+    int * p = _swap[1];
     while(*p != 0) {
         bool flag = is_emoji(*p);
         if (flag) {
+            has_emoji = true;
             //need exchange emoji
             int ret = exchange_emoji(*p);
             for (int i = 0; i < ret; ++i) {
@@ -67,6 +72,16 @@ int Utf8ToGbk::convert(const char * source, char * dest, bool & has_emoji) {
             *dest_p++ = *p++;
         }
     }
+
+    //step 3, convert unicode to gbk
+    int destlen = BUFLEN;
+    ret = _cc2.convert(_swap[2], dest_p - _swap[2], &dest, &destlen);
+    if (ret == (size_t)-1) {
+        perror("iconvert error");
+        return -1;
+    }
+
+    return 0;
 }
 
 bool Utf8ToGbk::is_emoji(int code_point) {
