@@ -31,6 +31,7 @@ public:
         if (ret == -1) {
             perror("iconv() error: ");
         }
+        return ret;
     }
 
 private:
