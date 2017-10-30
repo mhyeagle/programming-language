@@ -1,0 +1,6 @@
+查看文件的编码格式
+file -i iconv_test.cc
+
+文件编码转换
+iconv iconv_test.cc -f UTF-8 -t GBK -o iconv_test_gbk.cc
+
