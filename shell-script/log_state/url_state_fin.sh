@@ -115,14 +115,12 @@ errorcode() {
         if [[ $error_str_line != "" ]]
         then
             #url_one=$(echo $1 | awk -F'm_url\":\"' '{print $2}' |awk -F'"' '{print $1}')
-            errorcode_one=$(echo $1 | awk -F'ErrorCode' '{print $2}' | awk -F',' '{print $1}' | awk -F':' '{print $2}')
-            nid_one=$(echo $1 | awk -F'url_sign\":' '{print $2}' |awk -F'}' '{print $1}')
-            result=${result}$1"\r\nnid:"${nid_one}"\r\nerrorcode:"${errorcode_one}
-            return 1
+            errorcode_one=$(echo $line | awk -F'ErrorCode' '{print $2}' | awk -F',' '{print $1}' | awk -F':' '{print $2}')
+            nid_one=$(echo $line | awk -F'url_sign\":' '{print $2}' |awk -F'}' '{print $1}')
+            time_one=$(echo $line | awk -F"," '{print $1}' |awk -F'TRACE:' '{print $2}')
+            result=${result}"\r\nurl:"$1"\r\nnid:"${nid_one}"\r\ntime:"${time_one}"\r\nerrorcode:"${errorcode_one}"\r\n"
         fi
     done < $tmp_err_file
-
-    return 0
 }
 
 filter_reason() {
@@ -134,12 +132,10 @@ filter_reason() {
         then
             filter_one=$(echo $line | awk -F'filter_reason' '{print $2}' | awk -F'"' '{print $3}')
             nid_one=$(echo $line | awk -F'nid=' '{print $2}' |awk '{print $1}')
-            result=${result}${url_one}"\r\nnid:"${nid_one}"\r\nerrorcode:"${filter_one}
-            return 1
+            time_one=$(echo $line | awk -F"," '{print $1}' |awk -F'TRACE:' '{print $2}')
+            result=${result}"\r\nurl:"${1}"\r\nnid:"${nid_one}"\r\ntime:"${time_one}"\r\nfilter reason:"${filter_one}"\r\n"
         fi
     done < $tmp_filter_file
-
-    return 0
 }
 
 
@@ -150,19 +146,9 @@ result=""
 for url in ${urls_arr[@]}
 do
     result=${result}${sep_str}
-    ret=errorcode url
-    if [[ ret == 1 ]]
-    then
-        continue
-    fi
+    errorcode $url
 
-    ret=filter url
-    if [[ ret == 1 ]]
-    then
-        continue
-    fi
-
-    result=${result}"\r\nsuccess input rcmc"
+    filter_reason $url
 done
 
 echo $result
