@@ -35,5 +35,7 @@ public class FutureTest {
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
+
+        exec.shutdown();
     }
 }
